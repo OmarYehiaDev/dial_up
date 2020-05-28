@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "367297691920",
+    "firebase_url": "https://dial-10f6f.firebaseio.com",
+    "project_id": "dial-10f6f",
+    "storage_bucket": "dial-10f6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367297691920:android:83924b38ceebdb5616e595",
+        "android_client_info": {
+          "package_name": "com.example.dail_up"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367297691920-j8gah4lpkqrp9e96tg5g0a76atocll0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5n2DZoCB5IFfZd62e2obV19A21xsGG8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367297691920-j8gah4lpkqrp9e96tg5g0a76atocll0u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

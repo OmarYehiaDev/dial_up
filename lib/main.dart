@@ -1,137 +1,10 @@
 import 'package:dail_up/dailup.dart';
 import 'package:dail_up/verification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _phoneController = TextEditingController();
-final _codeController = TextEditingController();
 final _nameController = TextEditingController();
-final databaseReference = Firestore.instance;
-
-Future<bool> loginUser(String phone, String name, BuildContext context) async {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  _auth.verifyPhoneNumber(
-    phoneNumber: phone,
-    timeout: Duration(seconds: 60),
-    verificationCompleted: (AuthCredential credential) async {
-      Navigator.of(context).pop();
-
-      AuthResult result = await _auth.signInWithCredential(credential);
-
-      FirebaseUser user = result.user;
-
-      if (user != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('phoneno', user.phoneNumber);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Dailup(
-              phone: user.phoneNumber,
-              name: name,
-            ),
-          ),
-        );
-      } else {
-        print("Error");
-      }
-    },
-    verificationFailed: (AuthException exception) {
-      print(exception.message);
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Error"),
-          content: Text("verification failed"),
-        ),
-      );
-    },
-    codeSent: (String verificationId, [int forceResendingToken]) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Give the code?"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextField(
-                  controller: _codeController,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("Confirm"),
-                textColor: Colors.white,
-                color: Colors.blue,
-                onPressed: () async {
-                  final code = _codeController.text.trim();
-                  AuthCredential credential = PhoneAuthProvider.getCredential(
-                    verificationId: verificationId,
-                    smsCode: code,
-                  );
-
-                  AuthResult result =
-                      await _auth.signInWithCredential(credential);
-
-                  FirebaseUser user = result.user;
-
-                  if (user != null) {
-                    final snapShot = await databaseReference
-                        .collection("users")
-                        .document(user.uid)
-                        .get();
-                    if (snapShot.exists) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('phoneno', user.phoneNumber);
-                      prefs.setString('name', name);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Dailup(
-                            phone: user.phoneNumber,
-                          ),
-                        ),
-                      );
-                    } else {
-                      await databaseReference
-                          .collection("users")
-                          .document(user.uid)
-                          .setData(
-                        {'userName': name, 'phone': user.phoneNumber},
-                      );
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('phoneno', user.phoneNumber);
-                      prefs.setString('name', name);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Dailup(
-                            phone: user.phoneNumber,
-                            name: name,
-                          ),
-                        ),
-                      );
-                    }
-                  } else {
-                    print("Error");
-                  }
-                },
-              ),
-            ],
-          );
-        },
-      );
-    },
-    codeAutoRetrievalTimeout: null,
-  );
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -140,12 +13,12 @@ Future<void> main() async {
   print(phone);
   runApp(
     MaterialApp(
-      home: phone == null ? Dail_up() : Dailup(phone: phone),
+      home: phone == null ? DailUp() : Dailup(phone: phone),
     ),
   );
 }
 
-class Dail_up extends StatelessWidget {
+class DailUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -260,7 +133,12 @@ class LogIn extends StatelessWidget {
                       onPressed: () {
                         final phone = _phoneController.text.trim();
                         final name = _nameController.text.trim();
-                        loginUser(phone, name, context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Verification(name, phone),
+                          ),
+                        );
                       },
                       child: Text(
                         "Send Code",

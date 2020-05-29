@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialpad/flutter_dialpad.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +30,7 @@ class _MyAppState extends State<Dailup> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (BuildContext ctx) => Dail_up(),
+                builder: (BuildContext ctx) => DailUp(),
               ),
             );
           },

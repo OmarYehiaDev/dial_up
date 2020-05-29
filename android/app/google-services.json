@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "367297691920-1ch6orce26mgqq1puhhjkrjgil53hiud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dail_up",
+            "certificate_hash": "3e757356bc630beb82922b8f55eca683efbdc53c"
+          }
+        },
+        {
+          "client_id": "367297691920-b1avkdj1k2rsig6vhfot12enuatqqd5n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dail_up",
+            "certificate_hash": "988b36ce6d32a2ea044bf656e7ba82f4add747b0"
+          }
+        },
+        {
           "client_id": "367297691920-j8gah4lpkqrp9e96tg5g0a76atocll0u.apps.googleusercontent.com",
           "client_type": 3
         }
